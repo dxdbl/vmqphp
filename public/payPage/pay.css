@@ -218,6 +218,34 @@ body, .body {
     white-space: nowrap;
 }
 
+.wechat-risk-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    max-width: 520px;
+    margin: 4px auto 12px;
+    padding: 10px 14px;
+    box-sizing: border-box;
+    border-left: 4px solid #d97706;
+    background: #fff7e6;
+    color: #7a3e00;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1.6;
+    text-align: left;
+}
+
+.wechat-risk-icon {
+    flex: 0 0 22px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #d97706;
+    color: #fff;
+    line-height: 22px;
+    text-align: center;
+}
+
 .pay-success {
     display: none;
     min-height: 300px;
@@ -311,105 +339,6 @@ body, .body {
 .mod-ct .qr-image img {
     width: 230px;
     height: 230px
-}
-
-.mod-ct .detail {
-    margin-top: 10px;
-    padding-top: 0px;
-    padding-bottom: 10px;
-
-}
-
-.mod-ct .detail .arrow .ico-arrow {
-    display: inline-block;
-    width: 20px;
-    height: 11px;
-    background: url("wechat-pay.png") -25px -100px no-repeat
-}
-
-.mod-ct .detail .detail-ct {
-    display: none;
-    font-size: 12px;
-    text-align: right;
-    line-height: 28px
-}
-
-.mod-ct .detail .detail-ct dt {
-    float: left
-}
-
-.mod-ct .detail-open {
-    border-top: 1px solid #e5e5e5
-}
-
-.mod-ct .detail .arrow {
-    padding: 6px 34px;
-    border: 1px solid #e5e5e5
-}
-
-.mod-ct .detail .arrow .ico-arrow {
-    display: inline-block;
-    width: 20px;
-    height: 11px;
-    background: url("wechat-pay.png") -25px -100px no-repeat
-}
-
-.mod-ct .detail-open .arrow .ico-arrow {
-    display: inline-block;
-    width: 20px;
-    height: 11px;
-    background: url("wechat-pay.png") 0 -100px no-repeat
-}
-
-.mod-ct .detail-open .detail-ct {
-    display: block
-}
-
-.mod-ct .tip {
-    margin-top: 20px;
-    border-top: 1px dashed #e5e5e5;
-    padding: 10px 0;
-    position: relative
-}
-
-.mod-ct .tip .ico-scan {
-    display: inline-block;
-    width: 56px;
-    height: 55px;
-    background: url("wechat-pay.png") 0 0 no-repeat;
-    vertical-align: middle;
-    *display: inline;
-    *zoom: 1
-}
-
-.mod-ct .tip .tip-text {
-    display: inline-block;
-    vertical-align: middle;
-    text-align: left;
-    margin-left: 23px;
-    font-size: 16px;
-    line-height: 28px;
-    *display: inline;
-    *zoom: 1
-}
-
-.mod-ct .tip .dec {
-    display: inline-block;
-    width: 22px;
-    height: 45px;
-    background: url("wechat-pay.png") 0 -55px no-repeat;
-    position: absolute;
-    top: -23px
-}
-
-.mod-ct .tip .dec-left {
-    background-position: 0 -55px;
-    left: -136px
-}
-
-.mod-ct .tip .dec-right {
-    background-position: -25px -55px;
-    right: -136px
 }
 
 .foot {

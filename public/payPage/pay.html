@@ -56,6 +56,10 @@
 
 
             </div>
+            <div class="wechat-risk-notice" v-if="payType == 1" role="note">
+                <span class="wechat-risk-icon" aria-hidden="true">!</span>
+                <p>如果微信提示“商家风控”，请关闭本页面，返回原网站关闭当前订单，再重新选择支付宝下单。</p>
+            </div>
             <div class="time-item">
 
 
@@ -81,31 +85,6 @@
                 <strong id="second_show">0秒</strong>
             </div>
 
-            <div class="tip">
-                <div class="ico-scan"></div>
-                <div class="tip-text">
-                    <p>请使用{{payType1}}扫一扫</p>
-
-                    <p v-if="isAuto == 0">扫描二维码完成支付</p>
-                    <p v-if="isAuto == 1">扫码后输入金额支付</p>
-
-                </div>
-            </div>
-
-            <div class="detail" id="orderDetail">
-                <dl class="detail-ct" id="desc" style="display: none;">
-                    <dt>金额</dt>
-                    <dd>{{price}}</dd>
-                    <dt>商户订单：</dt>
-                    <dd>{{payId}}</dd>
-                    <dt>创建时间：</dt>
-                    <dd>{{formatDate(date)}}</dd>
-                    <dt>状态</dt>
-                    <dd>等待支付</dd>
-                </dl>
-
-                <a href="javascript:void(0)" class="arrow" onclick="aaa()"><i class="ico-arrow"></i></a>
-            </div>
         </div>
 
         <div class="pay-success" id="paySuccess" role="status" aria-live="polite">
@@ -117,11 +96,6 @@
                 <button type="button" class="pay-success-button close-page-button" onclick="closePaymentPage()">关闭本页面</button>
             </div>
             <p class="close-page-hint" id="closePageHint">浏览器未能自动关闭，请手动关闭当前标签页。</p>
-        </div>
-
-
-        <div class="tip-text">
-
         </div>
 
 
@@ -142,27 +116,6 @@
 
 <script>
 
-    function aaa() {
-        if ($('#orderDetail').hasClass('detail-open')) {
-            $('#orderDetail .detail-ct').slideUp(500, function () {
-                $('#orderDetail').removeClass('detail-open');
-            });
-        } else {
-            $('#orderDetail .detail-ct').slideDown(500, function () {
-                $('#orderDetail').addClass('detail-open');
-            });
-        }
-    }
-    function formatDate(now) {
-        now = new Date(now*1000)
-        return now.getFullYear()
-            + "-" + (now.getMonth()>8?(now.getMonth()+1):"0"+(now.getMonth()+1))
-            + "-" + (now.getDate()>9?now.getDate():"0"+now.getDate())
-            + " " + (now.getHours()>9?now.getHours():"0"+now.getHours())
-            + ":" + (now.getMinutes()>9?now.getMinutes():"0"+now.getMinutes())
-            + ":" + (now.getSeconds()>9?now.getSeconds():"0"+now.getSeconds());
-
-    }
     var myTimer;
     var paymentReturnUrl = '';
     function timer(intDiff) {
