@@ -38,9 +38,9 @@ RUN find application config route -type f -name '*.php' -print0 \
     && mkdir -p runtime public/qr-code/image \
     && chown -R www-data:www-data runtime public/qr-code/image
 
-EXPOSE 8080
+EXPOSE 18080
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
-    CMD curl --fail --silent --show-error http://127.0.0.1:8080/think > /dev/null || exit 1
+    CMD curl --fail --silent --show-error http://127.0.0.1:18080/think > /dev/null || exit 1
 
 CMD ["apache2-foreground"]

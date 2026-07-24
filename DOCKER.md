@@ -40,14 +40,14 @@ docker run -d \
 
 数据库密码会保留在 Shell 历史记录中。部署后请妥善限制 VPS 登录权限，不要将真实启动命令提交到 GitHub。
 
-`--network host` 仅适用于 Linux VPS。镜像中的 Apache 已固定监听 `127.0.0.1:8080`，因此不会占用 Nginx 的 80 端口，也不会直接向公网暴露 8080 端口。host 网络模式不使用 `-p` 端口映射。
+`--network host` 仅适用于 Linux VPS。镜像中的 Apache 已固定监听 `127.0.0.1:18080`，因此不会占用 Nginx 的 80 端口，也不会直接向公网暴露 18080 端口。host 网络模式不使用 `-p` 端口映射。
 
 检查容器和应用状态：
 
 ```bash
 docker ps
 docker logs vmqphp
-curl http://127.0.0.1:8080/think
+curl http://127.0.0.1:18080/think
 ```
 
 健康检查接口正常时会返回 `hello,ThinkPHP5!`。
@@ -63,7 +63,7 @@ server {
     server_name pay.example.com;
 
     location / {
-        proxy_pass http://127.0.0.1:8080;
+        proxy_pass http://127.0.0.1:18080;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -82,4 +82,4 @@ sudo nginx -t
 sudo systemctl reload nginx
 ```
 
-Apache 只监听 `127.0.0.1:8080`，公网请求必须经过 Nginx，不能直接访问该端口。
+Apache 只监听 `127.0.0.1:18080`，公网请求必须经过 Nginx，不能直接访问该端口。
