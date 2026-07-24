@@ -28,8 +28,8 @@ SET time_zone = "+00:00";
 -- 表的结构 `pay_order`
 --
 
-CREATE TABLE `pay_order` (
-  `id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `pay_order` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `close_date` bigint(20) NOT NULL,
   `create_date` bigint(20) NOT NULL,
   `is_auto` int(11) NOT NULL,
@@ -43,7 +43,8 @@ CREATE TABLE `pay_order` (
   `really_price` double NOT NULL,
   `return_url` varchar(255) DEFAULT NULL,
   `state` int(11) NOT NULL,
-  `type` int(11) NOT NULL
+  `type` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -52,12 +53,13 @@ CREATE TABLE `pay_order` (
 -- 表的结构 `pay_qrcode`
 --
 
-CREATE TABLE `pay_qrcode` (
-  `id` bigint(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `pay_qrcode` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `pay_url` varchar(255) DEFAULT NULL,
   `price` double NOT NULL,
-  `type` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `type` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=3;
 
 -- --------------------------------------------------------
 
@@ -65,16 +67,17 @@ CREATE TABLE `pay_qrcode` (
 -- 表的结构 `setting`
 --
 
-CREATE TABLE `setting` (
+CREATE TABLE IF NOT EXISTS `setting` (
   `vkey` varchar(255) NOT NULL,
-  `vvalue` varchar(255) DEFAULT NULL
+  `vvalue` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`vkey`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `setting`
 --
 
-INSERT INTO `setting` (`vkey`, `vvalue`) VALUES
+INSERT IGNORE INTO `setting` (`vkey`, `vvalue`) VALUES
 ('user', 'admin'),
 ('pass', 'admin'),
 ('notifyUrl', ''),
@@ -94,55 +97,12 @@ INSERT INTO `setting` (`vkey`, `vvalue`) VALUES
 -- 表的结构 `tmp_price`
 --
 
-CREATE TABLE `tmp_price` (
+CREATE TABLE IF NOT EXISTS `tmp_price` (
   `price` varchar(255) NOT NULL,
-  `oid` varchar(255) NOT NULL
+  `oid` varchar(255) NOT NULL,
+  PRIMARY KEY (`price`)
 
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- 转储表的索引
---
-
---
--- 表的索引 `pay_order`
---
-ALTER TABLE `pay_order`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `pay_qrcode`
---
-ALTER TABLE `pay_qrcode`
-  ADD PRIMARY KEY (`id`);
-
---
--- 表的索引 `setting`
---
-ALTER TABLE `setting`
-  ADD PRIMARY KEY (`vkey`);
-
---
--- 表的索引 `tmp_price`
---
-ALTER TABLE `tmp_price`
-  ADD PRIMARY KEY (`price`);
-
---
--- 在导出的表使用AUTO_INCREMENT
---
-
---
--- 使用表AUTO_INCREMENT `pay_order`
---
-ALTER TABLE `pay_order`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
-
---
--- 使用表AUTO_INCREMENT `pay_qrcode`
---
-ALTER TABLE `pay_qrcode`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
