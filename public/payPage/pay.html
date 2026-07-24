@@ -40,7 +40,7 @@
             <div class="amount" id="money">￥{{ reallyPrice }}</div>
             <div class="amount-notice" v-if="isAuto == 1">
                 为了区分订单，付款金额可能会有几分钱的调整，这是正常现象。<br>
-                请务必按照页面显示的金额 {{ reallyPrice }} 元输入并付款，金额需完全一致且精确到分，否则可能导致订单识别失败。
+                请务必按照页面显示的金额 <span class="amount-notice-value">{{ reallyPrice }} 元</span> 输入并付款，金额需完全一致且精确到分，否则可能导致订单识别失败。
             </div>
             <div class="qrcode-img-wrapper" data-role="qrPayImgWrapper">
                 <div data-role="qrPayImg" class="qrcode-img-area">
@@ -61,7 +61,7 @@
 
                 <div class="time-item" id="msg">
                     <div class="amount-notice" v-if="isAuto == 1">
-                        为了您正常支付，请务必付款 {{ reallyPrice }} 元<br>
+                        为了您正常支付，请务必付款 <span class="amount-notice-value">{{ reallyPrice }} 元</span><br>
                         备注说明无需填写<br>
                         如果付款后订单未成功，请立即发送邮件至 <a href="mailto:pineapple99929@gmail.com">pineapple99929@gmail.com</a><br>
                         邮件中请注明付款网站、付款金额和订单号，最好同时附上付款截图。

@@ -187,6 +187,17 @@ body, .body {
     overflow-wrap: anywhere;
 }
 
+.mod-ct .amount-notice-value {
+    display: inline-block;
+    padding: 0 5px;
+    background: #fff1b8;
+    color: #b42318;
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 1.35;
+    white-space: nowrap;
+}
+
 .mod-ct .qr-image {
     margin-top: 30px
 }
