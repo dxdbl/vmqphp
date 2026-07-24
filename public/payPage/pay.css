@@ -187,6 +187,26 @@ body, .body {
     overflow-wrap: anywhere;
 }
 
+.mod-ct .amount-notice .support-email {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #1264a3;
+    font-size: inherit;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+.mod-ct .amount-notice .support-email:hover {
+    color: #0b4f82;
+}
+
+.support-email-icon {
+    font-size: inherit;
+    line-height: 1;
+}
+
 .mod-ct .amount-notice-value {
     display: inline-block;
     padding: 0 5px;

@@ -63,7 +63,8 @@
                     <div class="amount-notice" v-if="isAuto == 1">
                         为了您正常支付，请务必付款 <span class="amount-notice-value">{{ reallyPrice }} 元</span><br>
                         备注说明无需填写<br>
-                        如果付款后订单未成功，请立即发送邮件至 <a :href="'mailto:' + supportEmail">{{ supportEmail }}</a><br>
+                        如果付款后订单未成功，请立即发送邮件至<br>
+                        <a class="support-email" :href="'mailto:' + supportEmail"><span class="support-email-icon" aria-hidden="true">&#9993;</span>{{ supportEmail }}</a><br>
                         邮件中请注明付款网站、付款金额和订单号，最好同时附上付款截图。
                     </div>
 
