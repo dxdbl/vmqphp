@@ -107,6 +107,17 @@
             </div>
         </div>
 
+        <div class="pay-success" id="paySuccess" role="status" aria-live="polite">
+            <div class="pay-success-icon" aria-hidden="true">✓</div>
+            <h2>支付成功</h2>
+            <p>请返回原来的网站查看。</p>
+            <div class="pay-success-actions">
+                <button type="button" class="pay-success-button return-site-button" onclick="returnToWebsite()">返回原网站</button>
+                <button type="button" class="pay-success-button close-page-button" onclick="closePaymentPage()">关闭本页面</button>
+            </div>
+            <p class="close-page-hint" id="closePageHint">浏览器未能自动关闭，请手动关闭当前标签页。</p>
+        </div>
+
 
         <div class="tip-text">
 
@@ -114,7 +125,7 @@
 
 
     </div>
-    <div class="foot">
+    <div class="foot" id="paymentFoot">
         <div class="inner">
             <p>手机用户可保存上方二维码到手机中</p>
             <p>在{{payType1}}扫一扫中选择“相册”即可</p>
@@ -152,6 +163,7 @@
 
     }
     var myTimer;
+    var paymentReturnUrl = '';
     function timer(intDiff) {
         var i = 0;
         i++;
@@ -210,6 +222,31 @@
         document.getElementById("timeOut").style.display = "";
     }
 
+    function showPaymentSuccess(returnUrl) {
+        clearInterval(myTimer);
+        paymentReturnUrl = returnUrl;
+        $('#timeOut').hide();
+        $('#orderbody').hide();
+        $('#paymentFoot').hide();
+        $('#paySuccess').show();
+        document.title = '支付成功';
+    }
+
+    function returnToWebsite() {
+        if (paymentReturnUrl) {
+            window.location.href = paymentReturnUrl;
+        }
+    }
+
+    function closePaymentPage() {
+        window.close();
+        window.setTimeout(function () {
+            if (!window.closed) {
+                $('#closePageHint').show();
+            }
+        }, 300);
+    }
+
 
     function getQueryString(name) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -253,7 +290,7 @@
         $.post("../checkOrder","orderId="+getQueryString("orderId"),function (data) {
             console.log(data);
             if (data.code == 1){
-                window.location.href = data.data;
+                showPaymentSuccess(data.data);
             } else{
                 if (data.data == "订单已过期") {
                     intDiff = 0;
