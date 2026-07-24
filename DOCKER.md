@@ -31,6 +31,7 @@ docker run -d \
   --name vmqphp \
   --restart unless-stopped \
   --network host \
+  -e 'APP_PORT=18080' \
   -e 'DB_DSN=mysql:host=127.0.0.1;port=3306;dbname=vmq;charset=utf8' \
   -e 'DB_USERNAME=vmq' \
   -e 'DB_PASSWORD=请替换为真实密码' \
@@ -43,7 +44,9 @@ docker run -d \
 
 数据库密码会保留在 Shell 历史记录中。部署后请妥善限制 VPS 登录权限，不要将真实启动命令提交到 GitHub。
 
-`--network host` 仅适用于 Linux VPS。镜像中的 Apache 已固定监听 `127.0.0.1:18080`，因此不会占用 Nginx 的 80 端口，也不会直接向公网暴露 18080 端口。host 网络模式不使用 `-p` 端口映射。
+`APP_PORT` 用于配置 Apache 的监听端口，默认值为 `18080`。修改端口后，健康检查会自动使用新端口，但宿主机的检查命令和 Nginx `proxy_pass` 也必须同步修改。
+
+`--network host` 仅适用于 Linux VPS。镜像中的 Apache 固定监听 `127.0.0.1`，因此不会直接向公网暴露应用端口。host 网络模式不使用 `-p` 端口映射。
 
 检查容器和应用状态：
 
@@ -85,4 +88,4 @@ sudo nginx -t
 sudo systemctl reload nginx
 ```
 
-Apache 只监听 `127.0.0.1:18080`，公网请求必须经过 Nginx，不能直接访问该端口。
+Apache 只监听 `127.0.0.1` 上由 `APP_PORT` 指定的端口，公网请求必须经过 Nginx，不能直接访问该端口。

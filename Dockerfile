@@ -1,6 +1,7 @@
 FROM php:7.4-apache-bullseye
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public \
+    APP_PORT=18080 \
     COMPOSER_ALLOW_SUPERUSER=1
 
 RUN apt-get update \
@@ -38,9 +39,9 @@ RUN find application config route -type f -name '*.php' -print0 \
     && mkdir -p runtime public/qr-code/image \
     && chown -R www-data:www-data runtime public/qr-code/image
 
-EXPOSE 18080
+EXPOSE ${APP_PORT}
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
-    CMD curl --fail --silent --show-error http://127.0.0.1:18080/think > /dev/null || exit 1
+    CMD curl --fail --silent --show-error "http://127.0.0.1:${APP_PORT}/think" > /dev/null || exit 1
 
 CMD ["apache2-foreground"]
