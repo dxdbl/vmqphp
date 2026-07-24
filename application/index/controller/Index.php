@@ -323,7 +323,8 @@ class Index
                 "isAuto" => $res['is_auto'],
                 "state" => $res['state'],
                 "timeOut" => $time['vvalue'],
-                "date" => $res['create_date']
+                "date" => $res['create_date'],
+                "supportEmail" => config("support_email")
             );
             return json($this->getReturn(1, "成功", $data));
         }else{

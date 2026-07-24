@@ -35,8 +35,11 @@ docker run -d \
   -e 'DB_USERNAME=vmq' \
   -e 'DB_PASSWORD=请替换为真实密码' \
   -e 'APP_DEBUG=false' \
+  -e 'SUPPORT_EMAIL=pay-support@example.com' \
   ghcr.io/dxdbl/vmqphp:latest
 ```
+
+`SUPPORT_EMAIL` 用于配置支付页面显示的订单异常联系邮箱。未设置或邮箱格式无效时，程序会使用内置默认邮箱。
 
 数据库密码会保留在 Shell 历史记录中。部署后请妥善限制 VPS 登录权限，不要将真实启动命令提交到 GitHub。
 

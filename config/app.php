@@ -17,6 +17,12 @@ $appDebug = getenv('APP_DEBUG');
 $appDebug = false === $appDebug ? env('app_debug', false) : $appDebug;
 $appDebug = filter_var($appDebug, FILTER_VALIDATE_BOOLEAN);
 
+$supportEmail = getenv('SUPPORT_EMAIL');
+$supportEmail = false === $supportEmail ? 'pineapple99929@gmail.com' : trim($supportEmail);
+if (!filter_var($supportEmail, FILTER_VALIDATE_EMAIL)) {
+    $supportEmail = 'pineapple99929@gmail.com';
+}
+
 return [
     // 应用名称
     'app_name'               => '',
@@ -24,6 +30,8 @@ return [
     'app_host'               => '',
     // 应用调试模式
     'app_debug'              => $appDebug,
+    // 支付异常联系邮箱，可通过 Docker 的 SUPPORT_EMAIL 环境变量覆盖
+    'support_email'          => $supportEmail,
     // 应用Trace
     'app_trace'              => false,
     // 是否支持多模块
