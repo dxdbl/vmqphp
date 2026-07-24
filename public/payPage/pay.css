@@ -172,6 +172,21 @@ body, .body {
     margin-top: 10px
 }
 
+.mod-ct .amount-notice {
+    max-width: 520px;
+    margin: 8px auto 0;
+    padding: 0 16px;
+    color: #d93025;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.6;
+}
+
+.mod-ct .amount-notice a {
+    color: inherit;
+    overflow-wrap: anywhere;
+}
+
 .mod-ct .qr-image {
     margin-top: 30px
 }
@@ -326,4 +341,3 @@ h1 {
     padding: 0 10px;
     float: left;
 }
-

@@ -20,7 +20,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>扫码支付</title>
     <link href="pay.css" rel="stylesheet" media="screen">
-    <script src="https://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="jquery-3.3.1.min.js"></script>
 </head>
 
 <body>
@@ -38,6 +38,10 @@
         <div class="amount" id="timeOut" style="font-size: 20px;color: red;display: none;"><p>订单已过期，请您返回网站重新发起支付</p><br></div>
         <div id="orderbody">
             <div class="amount" id="money">￥{{ reallyPrice }}</div>
+            <div class="amount-notice" v-if="isAuto == 1">
+                为了区分订单，付款金额可能会有几分钱的调整，这是正常现象。<br>
+                请务必按照页面显示的金额 {{ reallyPrice }} 元输入并付款，金额需完全一致且精确到分，否则可能导致订单识别失败。
+            </div>
             <div class="qrcode-img-wrapper" data-role="qrPayImgWrapper">
                 <div data-role="qrPayImg" class="qrcode-img-area">
                     <div class="ui-loading qrcode-loading" data-role="qrPayImgLoading" style="display: none;">加载中</div>
@@ -56,11 +60,12 @@
 
 
                 <div class="time-item" id="msg">
-                    <h1  v-if="price != reallyPrice">
-                        <span style="color:red">为了您正常支付 请务必付款 {{ reallyPrice }} 元 <br>备注说明无需填写</span><br>
-
-
-                    </h1>
+                    <div class="amount-notice" v-if="price != reallyPrice">
+                        为了您正常支付，请务必付款 {{ reallyPrice }} 元<br>
+                        备注说明无需填写<br>
+                        如果付款后订单未成功，请立即发送邮件至 <a href="mailto:pineapple99929@gmail.com">pineapple99929@gmail.com</a><br>
+                        邮件中请注明付款网站、付款金额和订单号，最好同时附上付款截图。
+                    </div>
 
                 </div>
 
@@ -121,7 +126,7 @@
 
 </div>
 
-<script src="https://lib.baomitu.com/vue/2.5.21/vue.min.js"></script>
+<script src="vue-2.5.21.min.js"></script>
 
 <script>
 
@@ -216,6 +221,7 @@
 
     $.post("../getOrder","orderId="+getQueryString("orderId"),function (data) {
         if (data.code==1){
+            data.data.reallyPrice = Number(data.data.reallyPrice).toFixed(2);
             var time = new Date().getTime()-data.data.date*1000;
             time = time/1000;
             time = data.data.timeOut*60 - time;
