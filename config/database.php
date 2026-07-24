@@ -9,21 +9,27 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
+$dockerEnv = function ($name, $legacyName, $default = null) {
+    $value = getenv($name);
+
+    return false === $value ? env($legacyName, $default) : $value;
+};
+
 return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => '127.0.0.1',
+    'hostname'        => $dockerEnv('DB_HOST', 'database.hostname', '127.0.0.1'),
     // 数据库名
-    'database'        => 'vmq',
+    'database'        => $dockerEnv('DB_DATABASE', 'database.database', 'vmq'),
     // 用户名
-    'username'        => 'root',
+    'username'        => $dockerEnv('DB_USERNAME', 'database.username', 'root'),
     // 密码
-    'password'        => 'root',
+    'password'        => $dockerEnv('DB_PASSWORD', 'database.password', ''),
     // 端口
-    'hostport'        => '3306',
+    'hostport'        => $dockerEnv('DB_PORT', 'database.hostport', '3306'),
     // 连接dsn
-    'dsn'             => '',
+    'dsn'             => $dockerEnv('DB_DSN', 'database.dsn', ''),
     // 数据库连接参数
     'params'          => [],
     // 数据库编码默认采用utf8

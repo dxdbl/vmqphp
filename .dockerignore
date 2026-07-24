@@ -1,0 +1,16 @@
+.git
+.github
+.idea
+.vscode
+.env
+runtime
+vendor
+*.log
+composer.phar
+vmq.sql
+wx.jpg
+zfb.jpg
+AGENTS.md
+README.md
+DOCKER.md
+.travis.yml

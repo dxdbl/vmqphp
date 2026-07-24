@@ -13,13 +13,17 @@
 // | 应用设置
 // +----------------------------------------------------------------------
 
+$appDebug = getenv('APP_DEBUG');
+$appDebug = false === $appDebug ? env('app_debug', false) : $appDebug;
+$appDebug = filter_var($appDebug, FILTER_VALIDATE_BOOLEAN);
+
 return [
     // 应用名称
     'app_name'               => '',
     // 应用地址
     'app_host'               => '',
     // 应用调试模式
-    'app_debug'              => true,
+    'app_debug'              => $appDebug,
     // 应用Trace
     'app_trace'              => false,
     // 是否支持多模块
