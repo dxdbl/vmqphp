@@ -56,6 +56,9 @@
 
 
             </div>
+            <div class="alipay-pay-action" v-if="payType == 2">
+                <a class="alipay-pay-button" :href="payUrl">跳转支付宝付款 {{ reallyPrice }} 元</a>
+            </div>
             <div class="wechat-risk-notice" v-if="payType == 1" role="note">
                 <span class="wechat-risk-icon" aria-hidden="true">!</span>
                 <p>如果微信提示“商家风控”，请关闭本页面，返回原网站关闭当前订单，再重新选择支付宝下单。</p>
