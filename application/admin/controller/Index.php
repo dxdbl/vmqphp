@@ -232,7 +232,7 @@ class Index
         $page = input("page");
         $size = input("limit");
 
-        $obj = Db::table('pay_order')->page($page,$size);
+        $obj = Db::table('pay_order');
         if (input("type")){
             $obj = $obj->where("type",input("type"));
         }
@@ -241,14 +241,15 @@ class Index
         }
 
 
-        $array = $obj->order("id","desc")->select();
+        $count = $obj->count();
+        $array = $obj->page($page,$size)->order("id","desc")->select();
 
         //echo $obj->getLastSql();
         return json(array(
             "code"=>0,
             "msg"=>"获取成功",
             "data"=>$array,
-            "count"=> $obj->count()
+            "count"=> $count
         ));
     }
     public function delOrder(){
