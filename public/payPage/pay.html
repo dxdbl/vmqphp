@@ -25,6 +25,17 @@
 
 <body>
 <div class="body" id="body">
+    <div id="paymentNotice" class="payment-notice-overlay" role="dialog" aria-modal="true" aria-labelledby="paymentNoticeTitle">
+        <div class="payment-notice-dialog">
+            <h2 id="paymentNoticeTitle">付款必读！！！切记！！！</h2>
+            <ul>
+                <li>请务必支付 <strong id="paymentNoticeAmount" class="payment-notice-amount">加载中</strong> 元，金额务必精确到分（小数点后 2 位数），不然订单会失败！！！</li>
+                <li>请务必在 <strong id="paymentNoticeTimeout" class="payment-notice-timeout">加载中</strong> 分钟内完成支付，超时后即使支付，订单也会失败！！！切记！！！</li>
+                <li>万一付款完订单没成功，可以等待 5 分钟左右；还没成功的话别急，可以再次发起新的支付。旧的失败付款请发邮件到 <a id="paymentNoticeEmail" class="payment-notice-email" href="#">加载中</a>，可以退回的，别担心！！！</li>
+            </ul>
+            <button id="paymentNoticeConfirm" type="button" class="payment-notice-confirm" onclick="acknowledgePaymentNotice()">我知道了</button>
+        </div>
+    </div>
     <h1 class="mod-title">
 
         <span class="ico_log ico-1" v-if="payType == 1"></span>
@@ -37,10 +48,13 @@
         </div>
         <div class="amount" id="timeOut" style="font-size: 20px;color: red;display: none;"><p>订单已过期，请您返回网站重新发起支付</p><br></div>
         <div id="orderbody">
-            <div class="amount" id="money">￥{{ reallyPrice }}</div>
+            <div class="payment-amount-row">
+                <div class="amount" id="money">￥{{ reallyPrice }}</div>
+                <button type="button" id="copyPaymentAmount" class="copy-amount-button" onclick="copyPaymentAmount()" title="复制付款金额">复制金额</button>
+            </div>
             <div class="amount-notice" v-if="isAuto == 1">
                 为了区分订单，付款金额可能会有几分钱的调整，这是正常现象。<br>
-                请务必按照页面显示的金额 <span class="amount-notice-value">{{ reallyPrice }} 元</span> 输入并付款，金额需完全一致且精确到分，否则可能导致订单识别失败。
+                请务必输入 <span class="amount-notice-value">{{ reallyPrice }} 元</span> 付款，金额需完全一致，否则订单会失败！切记！！！
             </div>
             <div class="qrcode-img-wrapper" data-role="qrPayImgWrapper">
                 <div data-role="qrPayImg" class="qrcode-img-area">
@@ -121,6 +135,51 @@
 
     var myTimer;
     var paymentReturnUrl = '';
+    var paymentAmountToCopy = '';
+
+    function acknowledgePaymentNotice() {
+        document.getElementById('paymentNotice').classList.add('is-hidden');
+        document.body.classList.remove('payment-notice-open');
+    }
+
+    document.body.classList.add('payment-notice-open');
+
+    function copyPaymentAmount() {
+        var amount = paymentAmountToCopy;
+        var button = document.getElementById('copyPaymentAmount');
+        if (!amount || !button) {
+            return;
+        }
+
+        var onCopied = function () {
+            var originalText = button.textContent;
+            button.textContent = '已复制';
+            window.setTimeout(function () {
+                button.textContent = originalText;
+            }, 1500);
+        };
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(amount).then(onCopied);
+            return;
+        }
+
+        var input = document.createElement('textarea');
+        input.value = amount;
+        input.setAttribute('readonly', '');
+        input.style.position = 'fixed';
+        input.style.opacity = '0';
+        document.body.appendChild(input);
+        input.select();
+        try {
+            if (document.execCommand('copy')) {
+                onCopied();
+            }
+        } finally {
+            document.body.removeChild(input);
+        }
+    }
+
     function timer(intDiff) {
         var i = 0;
         i++;
@@ -216,6 +275,11 @@
     $.post("../getOrder","orderId="+getQueryString("orderId"),function (data) {
         if (data.code==1){
             data.data.reallyPrice = Number(data.data.reallyPrice).toFixed(2);
+            paymentAmountToCopy = data.data.reallyPrice;
+            document.getElementById('paymentNoticeAmount').textContent = '￥' + data.data.reallyPrice;
+            document.getElementById('paymentNoticeTimeout').textContent = data.data.timeOut;
+            document.getElementById('paymentNoticeEmail').textContent = data.data.supportEmail;
+            document.getElementById('paymentNoticeEmail').href = 'mailto:' + data.data.supportEmail;
             var time = new Date().getTime()-data.data.date*1000;
             time = time/1000;
             time = data.data.timeOut*60 - time;
