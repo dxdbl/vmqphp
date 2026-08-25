@@ -31,7 +31,8 @@
             <ul>
                 <li>请务必支付 <strong id="paymentNoticeAmount" class="payment-notice-amount">加载中</strong> 元，金额务必精确到分（小数点后 2 位数），不然订单会失败！！！</li>
                 <li>请务必在 <strong id="paymentNoticeTimeout" class="payment-notice-timeout">加载中</strong> 分钟内完成支付，超时后即使支付，订单也会失败！！！切记！！！</li>
-                <li>万一付款完订单没成功，可以等待 5 分钟左右；还没成功的话别急，可以再次发起新的支付。旧的失败付款请发邮件到 <a id="paymentNoticeEmail" class="payment-notice-email" href="#">加载中</a>，可以退回的，别担心！！！</li>
+                <li>支付后订单未成功，请立即发送邮件至 <span class="payment-notice-email-row"><a id="paymentNoticeEmail" class="payment-notice-email" href="#">加载中</a><button type="button" id="copySupportEmail" class="copy-email-button" onclick="copySupportEmail()" title="复制客服邮箱">复制客服邮箱</button></span>，说明付款网站名称、网站邮箱账户和支付金额，最好附上支付截图。</li>
+                <li>请勿在微信或支付宝留言，因使用的是第三方支付系统，所以无法查看；请务必发送邮件处理失败订单！</li>
             </ul>
             <button id="paymentNoticeConfirm" type="button" class="payment-notice-confirm" onclick="acknowledgePaymentNotice()">我知道了</button>
         </div>
@@ -136,6 +137,7 @@
     var myTimer;
     var paymentReturnUrl = '';
     var paymentAmountToCopy = '';
+    var supportEmailToCopy = '';
 
     function acknowledgePaymentNotice() {
         document.getElementById('paymentNotice').classList.add('is-hidden');
@@ -166,6 +168,42 @@
 
         var input = document.createElement('textarea');
         input.value = amount;
+        input.setAttribute('readonly', '');
+        input.style.position = 'fixed';
+        input.style.opacity = '0';
+        document.body.appendChild(input);
+        input.select();
+        try {
+            if (document.execCommand('copy')) {
+                onCopied();
+            }
+        } finally {
+            document.body.removeChild(input);
+        }
+    }
+
+    function copySupportEmail() {
+        var email = supportEmailToCopy;
+        var button = document.getElementById('copySupportEmail');
+        if (!email || !button) {
+            return;
+        }
+
+        var onCopied = function () {
+            var originalText = button.textContent;
+            button.textContent = '已复制';
+            window.setTimeout(function () {
+                button.textContent = originalText;
+            }, 1500);
+        };
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(email).then(onCopied);
+            return;
+        }
+
+        var input = document.createElement('textarea');
+        input.value = email;
         input.setAttribute('readonly', '');
         input.style.position = 'fixed';
         input.style.opacity = '0';
@@ -280,6 +318,7 @@
             document.getElementById('paymentNoticeTimeout').textContent = data.data.timeOut;
             document.getElementById('paymentNoticeEmail').textContent = data.data.supportEmail;
             document.getElementById('paymentNoticeEmail').href = 'mailto:' + data.data.supportEmail;
+            supportEmailToCopy = data.data.supportEmail;
             var time = new Date().getTime()-data.data.date*1000;
             time = time/1000;
             time = data.data.timeOut*60 - time;
