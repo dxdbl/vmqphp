@@ -189,7 +189,9 @@ class Index
         $jkstate = $jkstate['vvalue'];
         if ($jkstate!="1"){
             if ($isHtml == 1) {
-                return '<script>window.location.href = "payPage/offline.html";</script>';
+                $supportEmail = config("support_email");
+                $offlineUrl = "payPage/offline.html?email=" . rawurlencode($supportEmail);
+                return '<script>window.location.href = "' . $offlineUrl . '";</script>';
             }
             return json($this->getReturn(-1, "监控端状态异常，请检查"));
 

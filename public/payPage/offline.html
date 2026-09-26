@@ -68,6 +68,52 @@
             font-size: 14px;
         }
 
+        .support {
+            margin-top: 22px;
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .support-email {
+            display: inline-block;
+            color: #1677ff;
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .support-email-row {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            max-width: 100%;
+            vertical-align: middle;
+        }
+
+        .copy-email-button {
+            flex: 0 0 auto;
+            width: auto;
+            max-width: none;
+            height: 32px;
+            margin-top: 0;
+            padding: 0 9px;
+            border: 1px solid #1677ff;
+            border-radius: 4px;
+            background: #ffffff;
+            color: #1677ff;
+            font-size: 13px;
+            line-height: 30px;
+            white-space: nowrap;
+        }
+
+        .copy-email-button:active {
+            background: #eef5ff;
+        }
+
         button {
             width: 100%;
             max-width: 240px;
@@ -102,8 +148,55 @@
         <div class="icon" aria-hidden="true">!</div>
         <h1>当前支付方式暂时故障<br>请使用其他支付方式</h1>
         <p class="tip">您可以选择过段时间重试，<br>我们发现故障后会尽量在第一时间修复！</p>
+        <p class="support">如需提醒商家，可发送邮件至<br><span class="support-email-row"><a id="supportEmail" class="support-email" href="mailto:pineapple99929@gmail.com">pineapple99929@gmail.com</a><button type="button" class="copy-email-button" onclick="copySupportEmail()">复制邮箱地址</button></span><br>邮件不会实时回复，我们会尽快处理。</p>
         <button type="button" onclick="window.close()">关闭本页面</button>
         <button type="button" class="secondary" onclick="history.back()">返回上一页</button>
     </main>
+    <script>
+        function copySupportEmail() {
+            var email = document.getElementById('supportEmail').textContent;
+            var button = document.querySelector('.copy-email-button');
+            var originalText = button.textContent;
+
+            function showCopied() {
+                button.textContent = '已复制';
+                window.setTimeout(function () {
+                    button.textContent = originalText;
+                }, 1500);
+            }
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(email).then(showCopied);
+                return;
+            }
+
+            var input = document.createElement('textarea');
+            input.value = email;
+            input.setAttribute('readonly', '');
+            input.style.position = 'fixed';
+            input.style.opacity = '0';
+            document.body.appendChild(input);
+            input.select();
+            try {
+                if (document.execCommand('copy')) {
+                    showCopied();
+                }
+            } finally {
+                document.body.removeChild(input);
+            }
+        }
+
+        (function () {
+            var match = window.location.search.match(/[?&]email=([^&]+)/);
+            if (!match) {
+                return;
+            }
+
+            var email = decodeURIComponent(match[1]);
+            var link = document.getElementById('supportEmail');
+            link.textContent = email;
+            link.href = 'mailto:' + email;
+        }());
+    </script>
 </body>
 </html>
