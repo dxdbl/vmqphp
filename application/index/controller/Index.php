@@ -188,6 +188,9 @@ class Index
         $jkstate = Db::name("setting")->where("vkey", "jkstate")->find();
         $jkstate = $jkstate['vvalue'];
         if ($jkstate!="1"){
+            if ($isHtml == 1) {
+                return '<script>window.location.href = "payPage/offline.html";</script>';
+            }
             return json($this->getReturn(-1, "监控端状态异常，请检查"));
 
         }
