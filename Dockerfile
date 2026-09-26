@@ -4,7 +4,12 @@ ENV APACHE_DOCUMENT_ROOT=/var/www/html/public \
     APP_PORT=18080 \
     COMPOSER_ALLOW_SUPERUSER=1
 
-RUN apt-get update \
+RUN sed -i \
+        -e 's|deb.debian.org/debian|archive.debian.org/debian|g' \
+        -e 's|security.debian.org/debian-security|archive.debian.org/debian-security|g' \
+        -e '/bullseye-updates/d' \
+        /etc/apt/sources.list \
+    && apt-get -o Acquire::Check-Valid-Until=false update \
     && apt-get install -y --no-install-recommends \
         curl \
         git \
