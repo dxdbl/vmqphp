@@ -8,6 +8,7 @@ RUN sed -i \
         -e 's|deb.debian.org/debian|archive.debian.org/debian|g' \
         -e 's|security.debian.org/debian-security|archive.debian.org/debian-security|g' \
         -e '/bullseye-updates/d' \
+        -e '/bullseye-security/d' \
         /etc/apt/sources.list \
     && apt-get -o Acquire::Check-Valid-Until=false update \
     && apt-get install -y --no-install-recommends \
