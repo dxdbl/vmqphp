@@ -50,12 +50,15 @@ mysql -u vmq -p vmq < vmq.sql
 
 当前镜像内的 Apache 监听 `127.0.0.1:${APP_PORT}`，默认端口为 `18080`。Linux VPS 使用 host 网络时，容器与宿主机共享网络命名空间，因此不需要使用 `-p` 映射端口。
 
-建议将环境变量保存到仅管理员可读的文件中：
+建议将配置、应用日志和数据库备份统一保存到 `/opt/vmq`：
 
 ```bash
-sudo install -d -m 700 /etc/vmqphp
-sudo nano /etc/vmqphp/vmqphp.env
-sudo chmod 600 /etc/vmqphp/vmqphp.env
+sudo install -d -m 700 /opt/vmq
+sudo install -d -m 750 /opt/vmq/runtime/log
+sudo install -d -m 700 /opt/vmq/backups
+sudo nano /opt/vmq/vmqphp.env
+sudo chmod 600 /opt/vmq/vmqphp.env
+sudo chown -R 33:33 /opt/vmq/runtime
 ```
 
 文件内容示例：
@@ -78,7 +81,10 @@ docker run -d \
   --name vmqphp \
   --restart unless-stopped \
   --network host \
-  --env-file /etc/vmqphp/vmqphp.env \
+  --env-file /opt/vmq/vmqphp.env \
+  -v /opt/vmq/runtime/log:/var/www/html/runtime/log \
+  --log-opt max-size=10m \
+  --log-opt max-file=3 \
   ghcr.io/dxdbl/vmqphp:latest
 ```
 
@@ -160,9 +166,14 @@ docker run -d \
   --name vmqphp \
   --restart unless-stopped \
   --network host \
-  --env-file /etc/vmqphp/vmqphp.env \
+  --env-file /opt/vmq/vmqphp.env \
+  -v /opt/vmq/runtime/log:/var/www/html/runtime/log \
+  --log-opt max-size=10m \
+  --log-opt max-file=3 \
   ghcr.io/dxdbl/vmqphp:latest
 ```
+
+应用日志会保存到宿主机 `/opt/vmq/runtime/log`。ThinkPHP 每天生成日志文件，应用配置最多保留 30 个日志文件；Docker 标准输出日志最多保留 3 个 10 MB 文件。数据库备份建议保存到 `/opt/vmq/backups`。Docker 自身的镜像和容器数据仍由 Docker 全局目录管理。
 
 生产环境建议使用不可变的版本标签或 `sha-*` 标签，而不是直接依赖 `latest`。升级前记录当前镜像：
 
