@@ -50,38 +50,29 @@ mysql -u vmq -p vmq < vmq.sql
 
 当前镜像内的 Apache 监听 `127.0.0.1:${APP_PORT}`，默认端口为 `18080`。Linux VPS 使用 host 网络时，容器与宿主机共享网络命名空间，因此不需要使用 `-p` 映射端口。
 
-建议将配置、应用日志和数据库备份统一保存到 `/opt/vmq`：
+当前部署通过 Docker `-e` 注入环境变量；`/opt/vmq` 用于保存应用日志和数据库备份：
 
 ```bash
-sudo install -d -m 700 /opt/vmq
 sudo install -d -m 750 /opt/vmq/runtime/log
 sudo install -d -m 700 /opt/vmq/backups
-sudo nano /opt/vmq/vmqphp.env
-sudo chmod 600 /opt/vmq/vmqphp.env
 sudo chown -R 33:33 /opt/vmq/runtime
 ```
 
-文件内容示例：
-
-```dotenv
-APP_PORT=18080
-APP_DEBUG=false
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=vmq
-DB_USERNAME=vmq
-DB_PASSWORD=请替换为真实数据库密码
-SUPPORT_EMAIL=pay-support@example.com
-```
-
-启动容器：
+启动容器时注入环境变量（将数据库密码替换成实际值）：
 
 ```bash
 docker run -d \
   --name vmqphp \
   --restart unless-stopped \
   --network host \
-  --env-file /opt/vmq/vmqphp.env \
+  -e APP_PORT=18080 \
+  -e APP_DEBUG=false \
+  -e DB_HOST=127.0.0.1 \
+  -e DB_PORT=3306 \
+  -e DB_DATABASE=vmq \
+  -e DB_USERNAME=vmq \
+  -e DB_PASSWORD='请替换为真实数据库密码' \
+  -e SUPPORT_EMAIL='pay-support@example.com' \
   -v /opt/vmq/runtime/log:/var/www/html/runtime/log \
   --log-opt max-size=10m \
   --log-opt max-file=3 \
@@ -166,7 +157,14 @@ docker run -d \
   --name vmqphp \
   --restart unless-stopped \
   --network host \
-  --env-file /opt/vmq/vmqphp.env \
+  -e APP_PORT=18080 \
+  -e APP_DEBUG=false \
+  -e DB_HOST=127.0.0.1 \
+  -e DB_PORT=3306 \
+  -e DB_DATABASE=vmq \
+  -e DB_USERNAME=vmq \
+  -e DB_PASSWORD='请替换为真实数据库密码' \
+  -e SUPPORT_EMAIL='pay-support@example.com' \
   -v /opt/vmq/runtime/log:/var/www/html/runtime/log \
   --log-opt max-size=10m \
   --log-opt max-file=3 \
