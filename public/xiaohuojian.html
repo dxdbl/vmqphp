@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="小火箭商店提供 Apple ID 购买与出租服务，覆盖美区、日区等常见使用场景。">
+    <meta name="theme-color" content="#09101f">
+    <title>小火箭商店｜Apple ID 购买与出租</title>
+    <style>
+        :root {
+            --ink: #f7f8fc;
+            --muted: #aab4ca;
+            --surface: rgba(18, 30, 55, .72);
+            --line: rgba(255, 255, 255, .12);
+            --accent: #ff8a4c;
+            --accent-strong: #ff5d56;
+            --blue: #76a8ff;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            color: var(--ink);
+            background: #09101f;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            line-height: 1.7;
+        }
+        body::before {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            content: "";
+            background:
+                radial-gradient(circle at 10% 15%, rgba(97, 122, 255, .22), transparent 30%),
+                radial-gradient(circle at 88% 18%, rgba(255, 138, 76, .16), transparent 28%),
+                linear-gradient(145deg, #09101f 0%, #0d1630 52%, #0a1123 100%);
+        }
+        body::after {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            content: "";
+            opacity: .22;
+            pointer-events: none;
+            background-image: linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+            background-size: 38px 38px;
+            mask-image: linear-gradient(to bottom, black, transparent 85%);
+        }
+        a { color: inherit; }
+        .wrap { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+        .topbar { padding: 24px 0; }
+        .topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+        .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; font-weight: 700; letter-spacing: .02em; }
+        .brand-mark { display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid rgba(255,255,255,.22); border-radius: 13px; background: linear-gradient(145deg, #ff9a5b, #f34d62); box-shadow: 0 8px 24px rgba(255, 93, 86, .28); font-size: 19px; }
+        .brand small { display: block; color: var(--muted); font-size: 11px; font-weight: 500; letter-spacing: .13em; }
+        .nav { display: flex; align-items: center; gap: 28px; color: var(--muted); font-size: 14px; }
+        .nav a { text-decoration: none; transition: color .2s ease; }
+        .nav a:hover, .nav a:focus-visible { color: var(--ink); }
+        .nav .nav-cta { padding: 9px 15px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); background: rgba(255,255,255,.05); }
+        .hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(340px, .95fr); align-items: center; gap: 72px; padding: 72px 0 112px; }
+        .eyebrow { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 20px; color: #ffb07d; font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+        .eyebrow::before { width: 24px; height: 1px; content: ""; background: var(--accent); }
+        h1, h2, h3, p { margin-top: 0; }
+        h1 { max-width: 660px; margin-bottom: 22px; font-size: clamp(40px, 6vw, 72px); line-height: 1.1; letter-spacing: -.055em; }
+        .hero-copy { max-width: 610px; color: var(--muted); font-size: 18px; }
+        .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 32px; }
+        .button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 21px; border: 1px solid transparent; border-radius: 12px; text-decoration: none; font-weight: 700; transition: transform .2s ease, box-shadow .2s ease, background .2s ease; }
+        .button:hover, .button:focus-visible { transform: translateY(-2px); }
+        .button-primary { color: #211217; background: linear-gradient(135deg, #ffb06b, #ff6d5f); box-shadow: 0 12px 28px rgba(255, 109, 95, .23); }
+        .button-ghost { border-color: var(--line); color: var(--ink); background: rgba(255,255,255,.04); }
+        .hero-note { margin: 17px 0 0; color: #77839e; font-size: 13px; }
+        .hero-card { position: relative; padding: 30px; border: 1px solid var(--line); border-radius: 28px; overflow: hidden; background: linear-gradient(155deg, rgba(29, 45, 80, .9), rgba(16, 25, 48, .68)); box-shadow: 0 24px 70px rgba(0,0,0,.24); }
+        .hero-card::before { position: absolute; width: 180px; height: 180px; top: -74px; right: -64px; border-radius: 50%; content: ""; background: rgba(118, 168, 255, .22); filter: blur(5px); }
+        .card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 42px; color: var(--muted); font-size: 13px; }
+        .status { display: inline-flex; align-items: center; gap: 8px; color: #b9edcf; }
+        .status::before { width: 8px; height: 8px; border-radius: 50%; content: ""; background: #61df9a; box-shadow: 0 0 0 5px rgba(97,223,154,.12); }
+        .card-icon { display: grid; width: 76px; height: 76px; margin-bottom: 22px; place-items: center; border: 1px solid rgba(255,255,255,.18); border-radius: 23px; background: linear-gradient(145deg, rgba(255,176,107,.22), rgba(118,168,255,.16)); font-size: 37px; }
+        .hero-card h2 { margin-bottom: 12px; font-size: 29px; letter-spacing: -.03em; }
+        .hero-card p { margin-bottom: 26px; color: var(--muted); font-size: 14px; }
+        .mini-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 0; padding: 0; list-style: none; }
+        .mini-list li { padding: 11px 13px; border: 1px solid rgba(255,255,255,.1); border-radius: 11px; color: #d8def0; background: rgba(255,255,255,.04); font-size: 13px; }
+        .section { padding: 78px 0; }
+        .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 28px; margin-bottom: 30px; }
+        .section-heading h2 { max-width: 600px; margin-bottom: 0; font-size: clamp(28px, 4vw, 45px); line-height: 1.16; letter-spacing: -.04em; }
+        .section-heading p { max-width: 390px; margin-bottom: 4px; color: var(--muted); font-size: 15px; }
+        .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .feature { padding: 25px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); }
+        .feature-number { color: var(--accent); font-size: 13px; font-weight: 800; letter-spacing: .12em; }
+        .feature h3 { margin: 35px 0 8px; font-size: 19px; }
+        .feature p { margin-bottom: 0; color: var(--muted); font-size: 14px; }
+        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: step; }
+        .step { position: relative; padding: 25px 25px 28px; border-top: 1px solid rgba(255,176,107,.5); counter-increment: step; }
+        .step::before { display: block; margin-bottom: 32px; color: #ffb07d; content: "0" counter(step); font-size: 12px; font-weight: 800; letter-spacing: .14em; }
+        .step h3 { margin-bottom: 8px; font-size: 19px; }
+        .step p { margin-bottom: 0; color: var(--muted); font-size: 14px; }
+        .faq-layout { display: grid; grid-template-columns: .7fr 1.3fr; gap: 60px; }
+        .faq-layout > div > p { color: var(--muted); font-size: 15px; }
+        .faq { border-top: 1px solid var(--line); }
+        details { border-bottom: 1px solid var(--line); }
+        summary { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 19px 0; cursor: pointer; list-style: none; font-weight: 700; }
+        summary::-webkit-details-marker { display: none; }
+        summary::after { color: var(--accent); content: "+"; font-size: 22px; font-weight: 400; }
+        details[open] summary::after { content: "−"; }
+        details p { max-width: 680px; padding: 0 38px 20px 0; margin-bottom: 0; color: var(--muted); font-size: 14px; }
+        .notice { display: flex; align-items: center; justify-content: space-between; gap: 28px; margin: 30px 0 90px; padding: 29px 32px; border: 1px solid rgba(255,176,107,.27); border-radius: 20px; background: linear-gradient(105deg, rgba(255,138,76,.14), rgba(118,168,255,.09)); }
+        .notice p { margin: 0; color: #d9dfed; font-size: 14px; }
+        .notice strong { display: block; margin-bottom: 4px; color: var(--ink); font-size: 17px; }
+        footer { padding: 25px 0 38px; border-top: 1px solid var(--line); color: #74809b; font-size: 13px; }
+        .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+        .footer-inner a { color: #aab4ca; text-decoration: none; }
+        @media (max-width: 800px) {
+            .hero { grid-template-columns: 1fr; gap: 38px; padding: 52px 0 76px; }
+            .hero-card { max-width: 560px; }
+            .feature-grid, .steps { grid-template-columns: 1fr; }
+            .faq-layout { grid-template-columns: 1fr; gap: 28px; }
+            .section-heading { display: block; }
+            .section-heading p { margin-top: 16px; }
+        }
+        @media (max-width: 560px) {
+            .wrap { width: min(100% - 28px, 1120px); }
+            .topbar { padding: 17px 0; }
+            .nav { gap: 12px; font-size: 12px; }
+            .nav a:not(.nav-cta) { display: none; }
+            h1 { font-size: 43px; }
+            .hero-copy { font-size: 16px; }
+            .hero-card { padding: 23px; border-radius: 21px; }
+            .section { padding: 57px 0; }
+            .notice, .footer-inner { align-items: flex-start; flex-direction: column; }
+            .notice { margin-bottom: 63px; padding: 23px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="wrap topbar-inner">
+            <a class="brand" href="#top" aria-label="小火箭商店首页">
+                <span class="brand-mark" aria-hidden="true">↗</span>
+                <span>小火箭商店<small>XIAOHUOJIAN.NET</small></span>
+            </a>
+            <nav class="nav" aria-label="主导航">
+                <a href="#services">服务内容</a>
+                <a href="#guide">使用流程</a>
+                <a href="#faq">常见问题</a>
+                <a class="nav-cta" href="https://store.xiaohuojian.net/" target="_blank" rel="noopener noreferrer">进入购买页 ↗</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="top">
+        <section class="wrap hero">
+            <div>
+                <p class="eyebrow">Apple ID 服务入口</p>
+                <h1>找到适合你的<br><span style="color:#ff9a65">苹果账号</span>服务。</h1>
+                <p class="hero-copy">小火箭商店专注于 Apple ID 账号购买与出租，覆盖美区、日区等常见使用场景。需要账号时，从这里开始更简单。</p>
+                <div class="hero-actions">
+                    <a class="button button-primary" href="https://store.xiaohuojian.net/" target="_blank" rel="noopener noreferrer">查看实时账号与套餐</a>
+                    <a class="button button-ghost" href="#services">了解服务范围</a>
+                </div>
+                <p class="hero-note">购买页的套餐、价格和交付规则会实时更新，请以页面展示为准。</p>
+            </div>
+            <aside class="hero-card" aria-label="小火箭商店服务概览">
+                <div class="card-top"><span>STORE OVERVIEW</span><span class="status">入口可用</span></div>
+                <div class="card-icon" aria-hidden="true"></div>
+                <h2>Apple ID 服务</h2>
+                <p>从账号类型到使用周期，购买页会清晰展示当前可选方案，按需选择即可。</p>
+                <ul class="mini-list">
+                    <li>账号购买</li>
+                    <li>账号出租</li>
+                    <li>美区 Apple ID</li>
+                    <li>日区 Apple ID</li>
+                </ul>
+            </aside>
+        </section>
+
+        <section class="wrap section" id="services">
+            <div class="section-heading">
+                <h2>覆盖常见的 Apple ID 使用需求</h2>
+                <p>发布页用于获取最新入口，购买页用于查看实时商品信息，两者配合使用更稳妥。</p>
+            </div>
+            <div class="feature-grid">
+                <article class="feature"><span class="feature-number">01 / TYPE</span><h3>购买账号</h3><p>适合希望长期使用的场景，具体可用时长与权限以购买页说明为准。</p></article>
+                <article class="feature"><span class="feature-number">02 / FLEXIBLE</span><h3>出租账号</h3><p>按周期使用账号，适合临时下载、测试或短期使用需求。</p></article>
+                <article class="feature"><span class="feature-number">03 / REGION</span><h3>多地区选择</h3><p>提供美区、日区等常见地区账号类型，按你的应用场景选择即可。</p></article>
+            </div>
+        </section>
+
+        <section class="wrap section" id="guide">
+            <div class="section-heading">
+                <h2>三步进入购买流程</h2>
+                <p>入口发生变化时，优先从发布页进入，避免保存过期的购买子链接。</p>
+            </div>
+            <div class="steps">
+                <article class="step"><h3>打开发布页</h3><p>访问并收藏 <strong>www.xiaohuojian.net</strong>，这里会同步最新入口和服务通知。</p></article>
+                <article class="step"><h3>前往购买页</h3><p>点击页面中的购买入口，进入 <strong>store.xiaohuojian.net</strong> 查看当前账号与套餐。</p></article>
+                <article class="step"><h3>按说明使用</h3><p>下单前阅读账号类型、交付方式与使用规则，完成后按购买页提示操作。</p></article>
+            </div>
+        </section>
+
+        <section class="wrap section" id="faq">
+            <div class="faq-layout">
+                <div>
+                    <p class="eyebrow">FAQ</p>
+                    <h2>常见问题</h2>
+                    <p>如果你第一次使用 Apple ID 服务，可以先看这里的快速说明。</p>
+                </div>
+                <div class="faq">
+                    <details open><summary>苹果账号购买和出租有什么区别？</summary><p>购买通常面向长期使用，出租通常按周期使用。具体可用时长、权限和限制请以购买页的实时规则为准。</p></details>
+                    <details><summary>如何找到最新入口？</summary><p>请收藏并优先访问发布页 <strong>www.xiaohuojian.net</strong>，地址或服务有调整时会在这里同步。</p></details>
+                    <details><summary>套餐、价格和支付方式在哪里看？</summary><p>购买页会根据当前库存实时展示账号类型、价格、支付方式与交付说明，请以下单页面信息为准。</p></details>
+                </div>
+            </div>
+        </section>
+
+        <div class="wrap notice">
+            <p><strong>准备好开始了吗？</strong>现在进入购买页，查看最新可用账号和套餐。</p>
+            <a class="button button-primary" href="https://store.xiaohuojian.net/" target="_blank" rel="noopener noreferrer">打开购买页 ↗</a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="wrap footer-inner">
+            <span>© 2026 XIAOHUOJIAN.NET</span>
+            <span>发布页：<a href="https://www.xiaohuojian.net/" target="_blank" rel="noopener noreferrer">www.xiaohuojian.net</a></span>
+        </div>
+    </footer>
+</body>
+</html>

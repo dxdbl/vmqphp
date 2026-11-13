@@ -92,6 +92,16 @@
                         }
                     }
                 },
+                {field: 'request_method', title: '请求方式',minWidth:110,templet: function(d){
+                        if (d.request_method=="1" || d.request_method===1){
+                            return '页面跳转';
+                        }
+                        if (d.request_method=="0" || d.request_method===0){
+                            return 'JSON';
+                        }
+                        return '未记录';
+                    }
+                },
                 {field: 'price', title: '订单金额',minWidth:100, align:'center'},
                 {field: 'really_price', title: '实际金额',minWidth:100, align:'center'},
 
@@ -121,6 +131,8 @@
                 ,layEvent = obj.event; //获得 lay-event 对应的值
             if(layEvent === 'info'){
                 var out = "<p>创建时间："+formatDate(data.create_date)+"</p>";
+                var requestMethod = data.request_method=="1" || data.request_method===1 ? "页面跳转" : (data.request_method=="0" || data.request_method===0 ? "JSON" : "未记录");
+                out += "<p>请求方式："+requestMethod+"</p>";
                 out += "<p>支付时间："+formatDate(data.pay_date)+"</p>";
                 out += "<p>关闭时间："+formatDate(data.close_date)+"</p>";
                 out += "<p>自定义参数："+data.param+"</p>";

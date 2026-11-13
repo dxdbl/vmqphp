@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS `pay_order` (
   `close_date` bigint(20) NOT NULL,
   `create_date` bigint(20) NOT NULL,
   `is_auto` int(11) NOT NULL,
+  `request_method` tinyint(1) DEFAULT NULL COMMENT '0:JSON, 1:页面跳转',
   `notify_url` varchar(255) DEFAULT NULL,
   `order_id` varchar(255) DEFAULT NULL,
   `param` varchar(255) DEFAULT NULL,
@@ -46,6 +47,9 @@ CREATE TABLE IF NOT EXISTS `pay_order` (
   `type` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- 已有数据库升级时执行：
+-- ALTER TABLE `pay_order` ADD COLUMN `request_method` tinyint(1) DEFAULT NULL COMMENT '0:JSON, 1:页面跳转' AFTER `is_auto`;
 
 -- --------------------------------------------------------
 
