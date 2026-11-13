@@ -67,9 +67,7 @@ docker run -d \
   --network host \
   -e APP_PORT=18080 \
   -e APP_DEBUG=false \
-  -e DB_HOST=127.0.0.1 \
-  -e DB_PORT=3306 \
-  -e DB_DATABASE=vmq \
+  -e 'DB_DSN=mysql:host=127.0.0.1;port=3306;dbname=vmq;charset=utf8' \
   -e DB_USERNAME=vmq \
   -e DB_PASSWORD='请替换为真实数据库密码' \
   -e SUPPORT_EMAIL='pay-support@example.com' \
@@ -159,9 +157,7 @@ docker run -d \
   --network host \
   -e APP_PORT=18080 \
   -e APP_DEBUG=false \
-  -e DB_HOST=127.0.0.1 \
-  -e DB_PORT=3306 \
-  -e DB_DATABASE=vmq \
+  -e 'DB_DSN=mysql:host=127.0.0.1;port=3306;dbname=vmq;charset=utf8' \
   -e DB_USERNAME=vmq \
   -e DB_PASSWORD='请替换为真实数据库密码' \
   -e SUPPORT_EMAIL='pay-support@example.com' \
